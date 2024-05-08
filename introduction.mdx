@@ -1,71 +1,82 @@
 ---
-title: Introduction
-description: 'Welcome to the home of your new documentation'
+title: "Introduction"
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.svg"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.svg"
-  alt="Hero Dark"
-/>
+### Overview
 
-## Setting up
+Health Harbor's API handles calls to insurance for your providers so you don't have to.
 
-The first step to world-class documentation is setting up your editing environments.
+This API supports insurance inquiries for [dental](api-reference/dental-quickstart), [mental health](api-reference/mental-health-quickstart), and [medical](api-reference/medical-quickstart) providers. Supported operations include:
+
+1. Creating an inquiry to call insurance for a provider.
+2. Reading a previously submitted inquiry to get its status and results.
+
+Each operation is supported individually or in bulk.
+
+### API Reference
 
 <CardGroup cols={2}>
+  <Card title="Quickstart Guide" icon="pen-to-square" href="/quickstart">
+    All the steps you need to start submitting your first Inquiry
+  </Card>
   <Card
-    title="Edit Your Docs"
+    title="API Reference"
     icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
+    href="api-reference/introduction"
   >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
+    Learn more about our what you can do with our API
   </Card>
 </CardGroup>
 
-## Make it yours
+### Guide
 
-Update your docs to your brand and add valuable content for the best user conversion.
+In this guide, we'll help you get started with Health Harbor. We will cover everything, starting with creating an account through authentication, creating your first inquiry and reading results.
 
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/components/accordion"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+### How Calls Work
+
+Our AI voice calls insurance companies to retrieve any information you need, including eligibility, prior auth status and claims status / denial reasons.
+
+There are three main stages to calls, first navigating the insurance's automated system or IVR, then waiting on hold, and finally speaking directly with a live agent.
+
+We handle the entire call and return results via our API or web portal.
+
+### Supported Insurance Payors
+
+We can call any insurance payor. Below is a list of insurances we currently support at scale. We're continuously working on adding support for new insurances. If you don't see an insurance that you need, just let us know and we can add it in for you.
+
+#### Dental
+Aetna, Cigna, MetLife, United Healthcare
+
+#### Medical
+Aetna, Cigna, Humana, United Healthcare
+
+#### Mental Health
+Aetna, Cigna, Humana, Optum, Oxford, United Healthcare
+
+### Completion Time
+
+On average, requests take 24 hours to return results. Our limitations are driven by the insurance companies open hours or system errors.
+If you submit a request after the insurance company has closed its call center for the day, it may take longer than 24 hours to receive results, however, even in those cases it should not take more than 48 hours.
+Sometimes the agents at the call centers have system shut downs. Since the insurance system shut downs are outside of our control, we will fulfill your request as soon as we can, however, it will likely not take more than 48 hours to receive results.
+
+### Verifying Results
+
+We provide multiple data points for you to verify that our information is accurate.
+
+First we provide the name of the representative or representatives that we spoke with and their reference number(s). We also provide the date and time that the call took place.
+
+Then we provide access to the call transcript, making it easy to quickly review the conversation with our AI.
+
+Finally we enable access to the recording of the call, so that you can verify the source data our results are based upon.
+
+### Pricing
+
+We charge based on the complexity of a call and how urgently you need the information.
+
+- We charge in proportion to the complexity of the call. It is not based on call duration, but rather what information is needed. For example, with eligibility requests we consider, how many custom questions you need answered, as well as how many codes you want benefits for. We do not factor in the time it takes to navigate the IVR system or even wait on hold. We eat that cost for you.
+
+- We also charge based on how urgently you need information. Urgent requests are 2x the price of non-urgent requests. Non-urgent requests return results in 24 hours. Urgent requests return results on the same day.
+
+Once we've aligned on pricing of your non-urgent requests, we provide free access to our web portal. Access to our API is a one time fee of $5000 as it come with dedicated time from one of our engineers.
+
+As you scale up usage we provide volume based discounts. Contact us for more information.

@@ -1,0 +1,332 @@
+---
+title: "Dental Quickstart"
+icon: "code"
+---
+
+<Warning>
+  These endpoints require authentication. Please see
+  [authentication](../authentication) for more information.
+</Warning>
+### Overview
+
+In this quickstart, we will retrieve benefits for a patient for a dental provider. We will walk through the requests needed to create an inquiry and retrieve the results.
+
+### Create an Inquiry
+
+First, we will send a POST request to create a dental inquiry. This provides the information necessary to check the patient's benefits on behalf of the dental provider.
+
+<Info>
+  The first character in the CDT codes (D) can be optionally omitted when passed
+  into `benefits_codes`.
+</Info>
+
+<CodeGroup>
+```bash cURL
+curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/dental/inquiries" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "BENEFITS",
+    "desired_completion_date": "08-25-2023",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2000",
+    "member_id": "123456789",
+    "group_id": "123456",
+    "insurance": "UNITED_HEALTHCARE",
+    "insurance_in_network": true,
+    "npi": "1234567890",
+    "tax_id": "123456789",
+    "external_id": "provider_123",
+    "benefits_codes": [
+      "D0120",
+      "D4240"
+    ],
+    "benefits_query": [
+      "CODE_LOOKUP_BENEFITS"
+    ],
+    "is_specialist": true,
+    "place_of_service": "office"
+}'
+```
+
+```python Python
+  url = 'https://healthharbor.co/api/v0/dental/inquiries'
+  payload = {
+    "type": "BENEFITS",
+    "desired_completion_date": "08-25-2023",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2000",
+    "member_id": "123456789",
+    "group_id": "123456",
+    "insurance": "UNITED_HEALTHCARE",
+    "insurance_in_network": True,
+    "npi": "1234567890",
+    "tax_id": "123456789",
+    "external_id": "provider_123",
+    "benefits_codes": [
+      "D0120",
+      "D4240"
+    ],
+    "benefits_query": [
+      "CODE_LOOKUP_BENEFITS",
+    ],
+    "is_specialist": True,
+    "place_of_service": "office"
+  }
+  response = request.post(
+    url = url,
+    data=json.dumps(payload),
+    auth=([PROJECT_ID], [API_KEY])
+  )
+
+```
+
+</CodeGroup>
+
+If the request has been successfully created, we will receive a response like this:
+
+<CodeGroup>
+```json JSON
+{
+  "success": true,
+  "inquiry_id": "7d98c8a4-4b17-4e9b-b2f6-6131df874b8b",
+}
+```
+</CodeGroup>
+
+### Retrieve an Inquiry
+
+Now that we've made a dental inquiry, we can check on the results using the `inquiry_id` received during inquiry creation.
+
+<CodeGroup>
+```bash cURL
+curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/dental/inquiries/722b06d8-1855-402b-9916-bfa450cc1572"
+```
+
+```python Python
+  url = 'https://healthharbor.co/api/v0/dental/inquiries/722b06d8-1855-402b-9916-bfa450cc1572'
+  response = request.get(
+    url=url,
+    auth=([PROJECT_ID], [API_KEY])
+  )
+```
+
+</CodeGroup>
+
+Here is a sample response.
+
+```json JSON
+[
+  {
+    "id": "722b06d8-1855-402b-9916-bfa450cc1572",
+    "status": "SUCCESS",
+    "creation_ts": "2023-08-01T00:00:00.000000Z",
+    "summary": "Benefits retrieved successfully.",
+    "results": {
+      "call_details": {
+        "call_time": "2023-08-01T06:00:00.0000Z",
+        "representative_name": "Deborah M",
+        "reference_number": "2812129"
+      },
+      "procedure_codes": [
+        [
+          {
+            "procedure_code": "D0120",
+            "procedure_name": "Exam"
+          },
+          {
+            "is_covered": true,
+            "is_prior_auth_required": false,
+            "coverage_percentage": 100.0,
+            "more_info": ""
+          }
+        ],
+        [
+          {
+            "procedure_code": "D4240",
+            "procedure_name": "Gingival Flap Procedure"
+          },
+          {
+            "is_covered": true,
+            "is_prior_auth_required": true,
+            "prior_auth_info": "Call United Healthcare at 555-123-1234",
+            "coverage_percentage": 50.0,
+            "more_info": ""
+          }
+        ]
+      ]
+    },
+    "request": {
+      "type": "BENEFITS",
+      "desired_completion_date": "08-25-2023",
+      "patient_name": "Alex Martin",
+      "dob": "01-31-2020",
+      "member_id": "123456789",
+      "group_id": "123456",
+      "insurance_in_network": true,
+      "insurance": "UNITED_HEALTHCARE",
+      "npi": "1234567890",
+      "tax_id": "123456789",
+      "external_id": "provider_123",
+      "benefits_codes": ["D0120", "D4240"],
+      "benefits_query": ["CODE_LOOKUP_BENEFITS"],
+      "is_specialist": true,
+      "place_of_service": "office"
+    }
+  }
+]
+```
+
+Alternatively, you can instead retrieve information on all the inquiries you've submitted. This can be filtered by the `external_id` you provided when you created the inquiry. Each inquiry will be returned in the array.
+
+<CodeGroup>
+```bash cURL
+curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/dental/inquiries"
+```
+
+```python Python
+  url = 'https://healthharbor.co/api/v0/dental/inquiries'
+
+  response = request.get(
+    url=url,
+    auth=([PROJECT_ID], [API_KEY])
+  )
+```
+
+</CodeGroup>
+
+---
+
+Here is an example of a more complex benefits request that also retrieves frequencies and treatment history. Note the addition of `CODE_LOOKUP_FREQUENCIES` qnd `TREATMENT_HISTORY` to `benefits_query`.
+
+<CodeGroup>
+```bash cURL
+curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/dental/inquiries" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "BENEFITS",
+    "desired_completion_date": "08-25-2023",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2000",
+    "member_id": "123456789",
+    "group_id": "123456",
+    "insurance": "UNITED_HEALTHCARE",
+    "insurance_in_network": true,
+    "npi": "1234567890",
+    "tax_id": "123456789",
+    "external_id": "provider_123",
+    "benefits_codes": [
+      "D0120",
+      "D4240"
+    ],
+    "benefits_query": [
+      "CODE_LOOKUP_BENEFITS", "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"
+    ],
+    "is_specialist": true,
+    "place_of_service": "office"
+}'
+```
+
+```python Python
+  url = 'https://healthharbor.co/api/v0/dental/inquiries'
+  payload = {
+    "type": "BENEFITS",
+    "desired_completion_date": "08-25-2023",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2000",
+    "member_id": "123456789",
+    "group_id": "123456",
+    "insurance": "UNITED_HEALTHCARE",
+    "insurance_in_network": True,
+    "npi": "1234567890",
+    "tax_id": "123456789",
+    "external_id": "provider_123",
+    "benefits_codes": [
+      "D0120",
+      "D4240"
+    ],
+    "benefits_query": [
+      "CODE_LOOKUP_BENEFITS", "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"
+    ],
+    "is_specialist": True,
+    "place_of_service": "office"
+  }
+  response = request.post(
+    url = url,
+    data=json.dumps(payload),
+    auth=([PROJECT_ID], [API_KEY])
+  )
+
+```
+
+</CodeGroup>
+
+And the associated response:
+
+```json JSON
+[
+  {
+    "id": "722b06d8-1855-402b-9916-bfa450cc1572",
+    "status": "SUCCESS",
+    "creation_ts": "2023-08-01T00:00:00.000000Z",
+    "summary": "Benefits retrieved successfully.",
+    "results": {
+      "call_details": {
+        "call_time": "2023-08-01T06:00:00.0000Z",
+        "representative_name": "Deborah M",
+        "reference_number": "2812129"
+      },
+      "treatment_history": {
+        "10-01-2020": ["D1110", "D1120"]
+      },
+      "procedure_codes": [
+        [
+          {
+            "procedure_code": "D0120",
+            "procedure_name": "Exam"
+          },
+          {
+            "is_covered": true,
+            "is_prior_auth_required": false,
+            "coverage_percentage": 100.0,
+            "frequency_limitations": "once per 36 floating months",
+            "more_info": ""
+          }
+        ],
+        [
+          {
+            "procedure_code": "D4240",
+            "procedure_name": "Gingival Flap Procedure"
+          },
+          {
+            "is_covered": true,
+            "is_prior_auth_required": true,
+            "prior_auth_info": "Call United Healthcare at 555-123-1234",
+            "coverage_percentage": 50.0,
+            "frequency_limitations": "once per 5 years"
+            "more_info": ""
+          }
+        ]
+      ]
+    },
+    "request": {
+      "type": "BENEFITS",
+      "desired_completion_date": "08-25-2023",
+      "patient_name": "Alex Martin",
+      "dob": "01-31-2020",
+      "member_id": "123456789",
+      "group_id": "123456",
+      "insurance_in_network": true,
+      "insurance": "UNITED_HEALTHCARE",
+      "npi": "1234567890",
+      "tax_id": "123456789",
+      "external_id": "provider_123",
+      "benefits_codes": ["D0120", "D4240"],
+      "benefits_query": ["CODE_LOOKUP_BENEFITS",  "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"],
+      "is_specialist": true,
+      "place_of_service": "office"
+    }
+  }
+]
+```
+
+Great! Now you have successfully created a dental inquiry and retrieved the results. For further details on the parameters and fields in the requests and the responses, please refer to our [Detailed API Reference](endpoint/create-dental-inquiry).

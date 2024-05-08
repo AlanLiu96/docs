@@ -1,91 +1,86 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Health Harbor Docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/health-harbor-dark.svg",
+    "light": "/logo/health-harbor-dark.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/health-harbor-logo.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#09979C",
+    "light": "#09979C",
+    "dark": "#09979C",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#09979C",
+      "to": "#09979C"
     }
   },
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:alan@healthharbor.co"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Sign Up",
+    "url": "https://healthharbor.co"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "API Reference",
+      "icon": "code",
+      "url": "api-reference"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Overview",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "authentication"
       ]
     },
     {
       "group": "API Documentation",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/introduction",
+        "api-reference/additional-options"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Dental",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/dental-quickstart",
+        "api-reference/endpoint/create-dental-inquiry",
+        "api-reference/endpoint/create-dental-inquiries",
+        "api-reference/endpoint/get-dental-inquiry",
+        "api-reference/endpoint/get-dental-inquiries"
+      ]
+    },
+    {
+      "group": "Mental Health",
+      "pages": [
+        "api-reference/mental-health-quickstart",
+        "api-reference/endpoint/create-mental-health-inquiry",
+        "api-reference/endpoint/create-mental-health-inquiries",
+        "api-reference/endpoint/get-mental-health-inquiry",
+        "api-reference/endpoint/get-mental-health-inquiries"
+      ]
+    },
+    {
+      "group": "Medical",
+      "pages": [
+        "api-reference/medical-quickstart",
+        "api-reference/endpoint/create-medical-inquiry",
+        "api-reference/endpoint/create-medical-inquiries",
+        "api-reference/endpoint/get-medical-inquiry",
+        "api-reference/endpoint/get-medical-inquiries"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  }
+    "x": "https://twitter.com/healthharbor_us",
+    "linkedin": "https://www.linkedin.com/company/health-harbor/"
+  },
+  "openapi": "https://healthharbor.co/openapi.json"
 }

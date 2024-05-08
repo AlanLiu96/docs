@@ -1,0 +1,25 @@
+---
+title: "Authentication"
+---
+
+### Authentication
+
+All of our REST APIs are authenticated using HTTP Basic Authentication. HTTP Basic Authentication requires you to send an Authorization header of your Project ID and API Key. This should be supported in almost all HTTP clients.
+
+These should have been provided to you by the Health Harbor team. If you do not have one, please reach out to us on Slack or [email](mailto:alan@healthharbor.co).
+
+<CodeGroup>
+  ```bash cURL
+  curl -u [PROJECT_ID]:[API_KEY] --request GET https://healthharbor.co/api/v0/dental/inquiries
+  ```
+
+```python Python
+url = 'https://healthharbor.co/api/v0/dental/inquiries'
+
+request = request.get(
+  url = url,
+  auth=([PROJECT_ID], [API_KEY])
+)
+```
+
+</CodeGroup>

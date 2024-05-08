@@ -1,33 +1,21 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Api Reference Introduction"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+### Welcome
 
-## Welcome
+Welcome to our API Documentation. Here is all the information you'll need to programmatically submit and retrieve benefits, and claims status requests.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+To begin, please select your specialty:
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
-
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+<CardGroup cols={2}>
+  <Card title="Dental" href="api-reference/dental-quickstart">
+    Dental Quickstart
+  </Card>
+  <Card title="Medical" href="api-reference/medical-quickstart">
+    Medical Quickstart
+  </Card>
+  <Card title="Mental Health" href="api-reference/mental-health-quickstart">
+    Mental Health Quickstart
+  </Card>
+</CardGroup>
