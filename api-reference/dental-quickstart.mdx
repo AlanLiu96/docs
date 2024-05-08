@@ -196,8 +196,7 @@ curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/den
 
 ---
 
-Here is an example of a more complex benefits request that also retrieves frequencies and treatment history. Note the addition of `CODE_LOOKUP_FREQUENCIES` and `TREATMENT_HISTORY` 
-to `benefits_query`.
+Here is an example of a more complex benefits request that also retrieves frequencies and treatment history. Note the addition of `CODE_LOOKUP_FREQUENCIES` qnd `TREATMENT_HISTORY` to `benefits_query`.
 
 <CodeGroup>
 ```bash cURL
@@ -277,7 +276,19 @@ And the associated response:
         "reference_number": "2812129"
       },
       "treatment_history": {
-        "10-01-2020": ["D1110", "D1120"]
+        "10-01-2020": [{
+          "procedure_code": "D1110",
+          "tooth_number": 1,
+          "surface": "occlusal",
+          "quadrant_number": 1
+          },
+          {
+          "procedure_code": "D1120",
+          "tooth_number": 5,
+          "surface": "distal",
+          "quadrant_number": 2
+          }
+        ]
       },
       "procedure_codes": [
         [
