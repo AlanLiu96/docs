@@ -43,40 +43,41 @@ curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/de
     "benefits_query": [
       "CODE_LOOKUP_BENEFITS"
     ],
-    "is_specialist": true,
-    "place_of_service": "office"
+    "is_specialist": true
 }'
 ```
 
 ```python Python
-  url = 'https://healthharbor.co/api/v0/dental/inquiries'
-  payload = {
-    "type": "BENEFITS",
-    "desired_completion_date": "08-25-2023",
-    "patient_name": "Alex Martin",
-    "dob": "01-31-2000",
-    "member_id": "123456789",
-    "group_id": "123456",
-    "insurance": "UNITED_HEALTHCARE",
-    "insurance_in_network": True,
-    "npi": "1234567890",
-    "tax_id": "123456789",
-    "external_id": "provider_123",
-    "benefits_codes": [
-      "D0120",
-      "D4240"
-    ],
-    "benefits_query": [
-      "CODE_LOOKUP_BENEFITS",
-    ],
-    "is_specialist": True,
-    "place_of_service": "office"
-  }
-  response = request.post(
-    url = url,
-    data=json.dumps(payload),
-    auth=([PROJECT_ID], [API_KEY])
-  )
+import requests
+import json
+
+url = 'https://healthharbor.co/api/v0/dental/inquiries'
+payload = {
+  "type": "BENEFITS",
+  "desired_completion_date": "08-25-2023",
+  "patient_name": "Alex Martin",
+  "dob": "01-31-2000",
+  "member_id": "123456789",
+  "group_id": "123456",
+  "insurance": "UNITED_HEALTHCARE",
+  "insurance_in_network": True,
+  "npi": "1234567890",
+  "tax_id": "123456789",
+  "external_id": "provider_123",
+  "benefits_codes": [
+    "D0120",
+    "D4240"
+  ],
+  "benefits_query": [
+    "CODE_LOOKUP_BENEFITS",
+  ],
+  "is_specialist": True
+}
+response = requests.post(
+  url = url,
+  data=json.dumps(payload),
+  auth=([PROJECT_ID], [API_KEY])
+)
 
 ```
 
@@ -103,11 +104,13 @@ curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/den
 ```
 
 ```python Python
-  url = 'https://healthharbor.co/api/v0/dental/inquiries/722b06d8-1855-402b-9916-bfa450cc1572'
-  response = request.get(
-    url=url,
-    auth=([PROJECT_ID], [API_KEY])
-  )
+import requests
+
+url = 'https://healthharbor.co/api/v0/dental/inquiries/722b06d8-1855-402b-9916-bfa450cc1572'
+response = requests.get(
+  url=url,
+  auth=([PROJECT_ID], [API_KEY])
+)
 ```
 
 </CodeGroup>
@@ -122,11 +125,14 @@ Here is a sample response.
     "creation_ts": "2023-08-01T00:00:00.000000Z",
     "summary": "Benefits retrieved successfully.",
     "results": {
-      "call_details": {
-        "call_time": "2023-08-01T06:00:00.0000Z",
-        "representative_name": "Deborah M",
-        "reference_number": "2812129"
-      },
+      "call_details": [
+        {
+          "call_end_time": "2023-08-01T06:00:00.0000Z",
+          "representative_name": "Deborah M",
+          "reference_number": "2812129",
+          "call_recording_url": "https://www.google.com/voice_recording.wav"
+        }
+      ],
       "procedure_codes": [
         [
           {
@@ -169,8 +175,7 @@ Here is a sample response.
       "external_id": "provider_123",
       "benefits_codes": ["D0120", "D4240"],
       "benefits_query": ["CODE_LOOKUP_BENEFITS"],
-      "is_specialist": true,
-      "place_of_service": "office"
+      "is_specialist": true
     }
   }
 ]
@@ -184,12 +189,13 @@ curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/den
 ```
 
 ```python Python
-  url = 'https://healthharbor.co/api/v0/dental/inquiries'
+import requests
 
-  response = request.get(
-    url=url,
-    auth=([PROJECT_ID], [API_KEY])
-  )
+url = 'https://healthharbor.co/api/v0/dental/inquiries'
+response = requests.get(
+  url=url,
+  auth=([PROJECT_ID], [API_KEY])
+)
 ```
 
 </CodeGroup>
@@ -221,40 +227,41 @@ curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/de
     "benefits_query": [
       "CODE_LOOKUP_BENEFITS", "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"
     ],
-    "is_specialist": true,
-    "place_of_service": "office"
+    "is_specialist": true
 }'
 ```
 
 ```python Python
-  url = 'https://healthharbor.co/api/v0/dental/inquiries'
-  payload = {
-    "type": "BENEFITS",
-    "desired_completion_date": "08-25-2023",
-    "patient_name": "Alex Martin",
-    "dob": "01-31-2000",
-    "member_id": "123456789",
-    "group_id": "123456",
-    "insurance": "UNITED_HEALTHCARE",
-    "insurance_in_network": True,
-    "npi": "1234567890",
-    "tax_id": "123456789",
-    "external_id": "provider_123",
-    "benefits_codes": [
-      "D0120",
-      "D4240"
-    ],
-    "benefits_query": [
-      "CODE_LOOKUP_BENEFITS", "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"
-    ],
-    "is_specialist": True,
-    "place_of_service": "office"
-  }
-  response = request.post(
-    url = url,
-    data=json.dumps(payload),
-    auth=([PROJECT_ID], [API_KEY])
-  )
+import requests
+import json
+
+url = 'https://healthharbor.co/api/v0/dental/inquiries'
+payload = {
+  "type": "BENEFITS",
+  "desired_completion_date": "08-25-2023",
+  "patient_name": "Alex Martin",
+  "dob": "01-31-2000",
+  "member_id": "123456789",
+  "group_id": "123456",
+  "insurance": "UNITED_HEALTHCARE",
+  "insurance_in_network": True,
+  "npi": "1234567890",
+  "tax_id": "123456789",
+  "external_id": "provider_123",
+  "benefits_codes": [
+    "D0120",
+    "D4240"
+  ],
+  "benefits_query": [
+    "CODE_LOOKUP_BENEFITS", "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"
+  ],
+  "is_specialist": True
+}
+response = requests.post(
+  url = url,
+  data=json.dumps(payload),
+  auth=([PROJECT_ID], [API_KEY])
+)
 
 ```
 
@@ -270,23 +277,24 @@ And the associated response:
     "creation_ts": "2023-08-01T00:00:00.000000Z",
     "summary": "Benefits retrieved successfully.",
     "results": {
-      "call_details": {
-        "call_time": "2023-08-01T06:00:00.0000Z",
+      "call_details": [{
+        "call_end_time": "2023-08-01T06:00:00.0000Z",
         "representative_name": "Deborah M",
-        "reference_number": "2812129"
-      },
+        "reference_number": "2812129",
+        "call_recording_url": "https://www.google.com/voice_recording.wav"
+      }],
       "treatment_history": {
         "10-01-2020": [{
           "procedure_code": "D1110",
-          "tooth_number": 1,
-          "surface": "occlusal",
-          "quadrant_number": 1
+          "tooth_numbers": [1, 21],
+          "surfaces": ["occlusal"],
+          "quadrant_numbers": [1]
           },
           {
           "procedure_code": "D1120",
-          "tooth_number": 5,
-          "surface": "distal",
-          "quadrant_number": 2
+          "tooth_numbers": [5],
+          "surfaces": ["distal"],
+          "quadrant_numbers": [2,3]
           }
         ]
       },
@@ -334,8 +342,7 @@ And the associated response:
       "external_id": "provider_123",
       "benefits_codes": ["D0120", "D4240"],
       "benefits_query": ["CODE_LOOKUP_BENEFITS",  "CODE_LOOKUP_FREQUENCIES", "TREATMENT_HISTORY"],
-      "is_specialist": true,
-      "place_of_service": "office"
+      "is_specialist": true
     }
   }
 ]

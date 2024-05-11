@@ -15,18 +15,18 @@ Our API is authenticated using HTTP Basic Authentication. You'll need to pass in
 
 <CodeGroup>
   ```bash cURL
-  curl -u username:password --request GET https://healthharbor.co/api/v0/mental_health/inquiries
+  curl -u [PROJECT_ID]:[API_KEY] --request GET https://healthharbor.co/api/v0/mental_health/inquiries
   ```
 
 ```python Python
 url = 'https://healthharbor.co/api/v0/mental_health/inquiries'
 
-username = 'HEALTH_HARBOR_USERNAME'
-password = 'HEALTH_HARBOR_CREDENTIALS'
+[PROJECT_ID] = 'HEALTH_HARBOR_[PROJECT_ID]'
+[API_KEY] = 'HEALTH_HARBOR_CREDENTIALS'
 
 request = request.get(
   url = url,
-  auth=(username, password)
+  auth=([PROJECT_ID], [API_KEY])
 )
 ```
 
@@ -46,7 +46,7 @@ For specific benefits codes, please use `CODE_LOOKUP_BENEFITS` as the `benefits_
 
 <CodeGroup>
 ```bash cURL
-curl -u username:password --request POST "https://healthharbor.co/api/v0/mental_health/inquiries" \
+curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/mental_health/inquiries" \
   --header 'Content-Type: application/json' \
   --data '{
     "type": "BENEFITS",
@@ -72,8 +72,8 @@ curl -u username:password --request POST "https://healthharbor.co/api/v0/mental_
 ```python Python
   url = 'https://healthharbor.co/api/v0/mental_health/inquiries'
 
-  username = 'HEALTH_HARBOR_USERNAME'
-  password = 'HEALTH_HARBOR_CREDENTIALS'
+  [PROJECT_ID] = 'HEALTH_HARBOR_[PROJECT_ID]'
+  [API_KEY] = 'HEALTH_HARBOR_CREDENTIALS'
 
   payload = {
     "type": "BENEFITS",
@@ -98,7 +98,7 @@ curl -u username:password --request POST "https://healthharbor.co/api/v0/mental_
   response = request.post(
     url = url,
     data=json.dumps(payload),
-    auth=(username, password)
+    auth=([PROJECT_ID], [API_KEY])
   )
 
 ```
@@ -122,18 +122,18 @@ Now that you've made a mental health inquiry, you want to check on the results. 
 
 <CodeGroup>
 ```bash cURL
-curl -u username:password --request GET "https://healthharbor.co/api/v0/mental_health/inquiries/722b06d8-1855-402b-9916-bfa450cc1572"
+curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/mental_health/inquiries/722b06d8-1855-402b-9916-bfa450cc1572"
 ```
 
 ```python Python
   url = 'https://healthharbor.co/api/v0/mental_health/inquiries'
 
-  username = 'HEALTH_HARBOR_USERNAME'
-  password = 'HEALTH_HARBOR_CREDENTIALS'
+  [PROJECT_ID] = 'HEALTH_HARBOR_[PROJECT_ID]'
+  [API_KEY] = 'HEALTH_HARBOR_CREDENTIALS'
 
   response = request.get(
     url=url,
-    auth=(username, password)
+    auth=([PROJECT_ID], [API_KEY])
   )
 ```
 
@@ -149,7 +149,7 @@ Here is a sample response.
   "summary": "Benefits retrieved successfully.",
   "results": {
     "call_details": {
-      "call_time": "2024-03-01T06:00:00.0000Z",
+      "call_end_time": "2024-03-01T06:00:00.0000Z",
       "representative_name": "Deborah M",
       "reference_number": "2812129"
     },
