@@ -1,0 +1,156 @@
+---
+title: "Webhooks"
+---
+
+We support webhooks as an alternative to polling to receive real-time updates on your inquiries. This allows your backend to receive updates as soon as they are available without the need to poll our API for updates or keep track of inquiries in progress.
+
+
+
+## Getting Started with Webhooks
+
+To enable webhooks, you'll need to register a subscription with a webhook endpoint. This endpoint will receive a POST request with the inquiry data as soon whenever an update has been made (e.g. when the call is initiated, in progress and completed).
+
+This can be done by sending a POST request to the `/api/v0/webhooks` endpoint with a callback URL and an update frequency (defaults to 5 minutes). Only one subscription can be registered at a time. Any changes will update the existing subscription. It can be viewed by sending a GET request to the endpoint and be deleted by sending a DELETE request to the same endpoint.
+
+<CodeGroup>
+  ```bash cURL
+  curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/webhooks" \
+    --header 'Content-Type: application/json' \
+    --data '{
+      "callback_url": "https://your-webhook-endpoint.com",
+      "update_frequency_min": 5
+    }'
+  ```
+
+```python Python
+import requests
+import json
+
+url = 'https://healthharbor.co/api/v0/webhooks'
+payload = {
+  "callback_url": "https://your-webhook-endpoint.com",
+  "update_frequency_min": 5
+}
+response = requests.post(
+  url = url,
+  data=json.dumps(payload),
+  auth=([PROJECT_ID], [API_KEY])
+)
+```
+
+``` javascript Javascript
+const axios = require('axios');
+
+const url = 'https://healthharbor.co/api/v0/webhooks';
+const payload = {
+  callback_url: 'https://your-webhook-endpoint.com',
+  update_frequency_min: 5
+};
+
+axios.post(url, payload, {
+  auth: {
+    username: [PROJECT_ID],
+    password: [API_KEY]
+  }
+});
+```
+</CodeGroup>
+
+### Webhook Request Format
+As a request, you will receieve a JSON object similar to the following. Each request contains a subscription_id, a message hash that can be used to uniquely identify the message to prevent duplicates and an array of inquiries that have been updated. Each inquiry object is the same as the one you would receive from the polling based API as a response. See the responses on the respective quickstarts for more information: [Dental](/docs/api-reference/dental-quickstart), [Mental Health](/docs/api-reference/mental-health-quickstart), [Medical](/docs/api-reference/medical-quickstart).
+
+<Note>
+Due to limitations on POST request payload size, if the request is too large, it may be broken up into multiple requests that are sent in quick succession at the specified frequency.
+</Note>
+
+
+```json
+{
+  "subscription_id": "TEST_SUBSCRIPTION_ID",
+  "inquiries": [
+    {
+      "id": "inquiry_id",
+      "status": "IN_PROGRESS",
+      "creation_ts": "2024-05-24T18:18:27.134818",
+      "summary": "",
+      "results": null,
+      "request": {
+        "type": "BENEFITS",
+        "desired_completion_date": "05-24-2024",
+        "patient_name": "Alan Liu",
+        "dob": "01-25-1980",
+        "member_id": "U1231234",
+        "group_id": null,
+        "insurance_in_network": false,
+        "npi": "1234567890",
+        "tax_id": "123456789",
+        "external_id": "correlation_id",
+        "diagnosis_codes": null,
+        "claims_date_of_service": null,
+        "claim_number": null,
+        "insurance": "METLIFE",
+        "benefits_query": [
+          "TREATMENT_HISTORY"
+        ],
+        "benefits_codes": [
+        ],
+        "is_specialist": null
+      }
+    }
+  ],
+  "message_hash": "aa2c28076dfd961db84b9396e35cf5511d07338012983e702833cf92a107e2fa"
+}
+```
+
+### Best Practices
+#### Handle duplicate events
+Webhook endpoints might sometimes receive the same event multiple times. To prevent duplicate event processing, ensure your event handling is idempotent. One approach is to log the events you have processed and then skip any events that are already logged. We provide a message hash with every request that can be used to uniquely identify the message.
+
+#### Exempt webhook route from CSRF protection
+If you're utilizing Rails, Django, or another web framework, your site likely verifies that every POST request includes a CSRF token. This crucial security feature safeguards you and your users against cross-site request forgery attempts. However, this protection can sometimes interfere with the processing of legitimate events. In such cases, you may need to exclude the webhooks route from CSRF protection.
+
+### Webhook Security and Verification
+We sign all Webhook events with a signature to ensure that they are authentic and have not been tampered with. This signature is included in the `X-HealthHarbor-Signature` header of the request. You can use this signature to verify the authenticity of the event.
+
+Signatures are generated using a hash-based message authentication code (HMAC) with SHA-256. The signature is computed using the secret key provided by Health Harbor (contact alan@healthharbor.co if you need the webhook secret). You can verify the signature by re-computing it using the same secret key and comparing it to the signature in the request.
+
+Here's an example code snippet that compares the signature in the request to the computed signature:
+  <CodeGroup>
+  ```python Python
+  import hmac
+  import hashlib
+  import os
+
+  from flask import request
+
+  WEBHOOK_SECRET = os.environ.get('WEBHOOK_SECRET')
+
+  @app.route('/webhook', methods=['POST'])
+  def webhook():
+    signature = request.headers['X-HealthHarbor-Signature']
+    payload = request.data
+    computed_signature = hmac.new(WEBHOOK_SECRET, payload, hashlib.sha256).hexdigest()
+    if computed_signature == signature:
+      # Signature is valid
+    else:
+      # Signature is invalid
+  ```
+
+  ```javascript Javascript
+  const crypto = require('crypto');
+
+  const secret = process.env.WEBHOOK_SECRET;
+  const signature = req.headers['X-HealthHarbor-Signature'];
+  const payload = req.body;
+
+  const computedSignature = crypto.createHmac('sha256', secret)
+    .update(payload)
+    .digest('hex');
+
+  if (computedSignature === signature) {
+    // Signature is valid
+  } else {
+    // Signature is invalid
+  }
+  ```
+  </CodeGroup>

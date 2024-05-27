@@ -37,7 +37,8 @@
       "group": "Overview",
       "pages": [
         "introduction",
-        "authentication"
+        "authentication",
+        "webhooks"
       ]
     },
     {
