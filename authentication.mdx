@@ -4,21 +4,94 @@ title: "Authentication"
 
 ### Authentication
 
-All of our REST APIs are authenticated using HTTP Basic Authentication. HTTP Basic Authentication requires you to send an Authorization header of your Project ID and API Key. This should be supported in almost all HTTP clients.
+All of our REST APIs require authentication for access.
+
+There are two ways to get authenticated: OAuth2 and HTTP Basic Authentication. We recommend using OAuth2 but will discuss both supported ways here.
+
+
+### OAuth2
+
+To get authenticated with OAuth2, you must first retrieve an access token. Once you have successfully retrieved your access token, you can pass that in with your API requests to be authenticated. Our access tokens are valid for one day, please regenerate access tokens as needed.
+
+You can generate an access token by making a POST to https://healthharbor/co/api/v0/auth/token. This POST request requires you to pass in your username and password as multi-part form data. Your username and password should have been provided to you by the Health Harbor team. If you do not have one, please reach out to us on Slack or [email](mailto:alan@healthharbor.co).
+
+<Warning>
+  It is important that your credentials are passed in as multi-part form data per OAuth2 specifications.
+</Warning>
+
+<CodeGroup>
+  ```bash cURL
+  cURL --data '{"username": "yourusername", "password": "yourpassword"}' --header "Content-Type: application/x-www-form-urlencoded" --request POST https://healthharbor.co/api/v0/auth/token
+
+  ```
+
+  ```python Python
+  url = 'https://healthharbor.co/api/v0/auth/token'
+
+  payload = {
+    "username": "yourusername",
+    "password": "yourpassword"
+  }
+  headers = {
+    "Content-Type": "application/x-www-form-urlencoded"
+  }
+
+  response = request.post(
+    url=url,
+    data=payload,
+    headers=headers
+  )
+  ```
+</CodeGroup>
+
+A successful response will provide an access token and token type:
+<CodeGroup>
+  ```json JSON
+  {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "token_type": "bearer"
+  }
+  ```
+</CodeGroup>
+
+You can now use that access token to authenticate all your API requests!
+
+<CodeGroup>
+  ```bash cURL
+  curl --header "Authorization: Bearer youraccesstoken" --request GET https://healthharbor.co/api/v0/dental/inquiries
+  ```
+
+  ```python Python
+  url = 'https://healthharbor.co/api/v0/dental/inquiries'
+
+  headers = {
+      "Authorization": f"Bearer youraccesstoken"
+  }
+
+  request = request.get(
+    url=url,
+    headers=headers
+  )
+  ```
+</CodeGroup>
+
+### HTTP Basic Authentication
+
+Another way to get authenticated is HTTP Basic Authentication. This requires you to send an Authorization header of your Project ID and API Key also known as your username and password respectively. This should be supported in almost all HTTP clients.
 
 These should have been provided to you by the Health Harbor team. If you do not have one, please reach out to us on Slack or [email](mailto:alan@healthharbor.co).
 
 <CodeGroup>
   ```bash cURL
-  curl -u [PROJECT_ID]:[API_KEY] --request GET https://healthharbor.co/api/v0/dental/inquiries
+  curl -u "yourusername:yourpassword" --request GET https://healthharbor.co/api/v0/dental/inquiries
   ```
 
 ```python Python
 url = 'https://healthharbor.co/api/v0/dental/inquiries'
 
 request = request.get(
-  url = url,
-  auth=([PROJECT_ID], [API_KEY])
+  url=url,
+  auth=("yourusername", "yourpassword")
 )
 ```
 
