@@ -13,7 +13,7 @@ There are two ways to get authenticated: OAuth2 and HTTP Basic Authentication. W
 
 To get authenticated with OAuth2, you must first retrieve an access token. Once you have successfully retrieved your access token, you can pass that in with your API requests to be authenticated. Our access tokens are valid for one day, please regenerate access tokens as needed.
 
-You can generate an access token by making a POST to https://healthharbor/co/api/v0/auth/token. This POST request requires you to pass in your username and password as multi-part form data. Your username and password should have been provided to you by the Health Harbor team. If you do not have one, please reach out to us on Slack or [email](mailto:alan@healthharbor.co).
+You can generate an access token by making a POST to https://healthharbor.co/api/v0/auth/token. This POST request requires you to pass in your username and password as multi-part form data. Your username and password should have been provided to you by the Health Harbor team. If you do not have one, please reach out to us on Slack or [email](mailto:alan@healthharbor.co).
 
 <Warning>
   It is important that your credentials are passed in as multi-part form data per OAuth2 specifications.
