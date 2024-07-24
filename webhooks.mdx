@@ -10,11 +10,11 @@ We support webhooks as an alternative to polling to receive real-time updates on
 
 To enable webhooks, you'll need to register a subscription with a webhook endpoint. This endpoint will receive a POST request with the inquiry data as soon whenever an update has been made (e.g. when the call is initiated, in progress and completed).
 
-This can be done by sending a POST request to the `/api/v0/webhooks` endpoint with a callback URL and an update frequency (defaults to 5 minutes). Only one subscription can be registered at a time. Any changes will update the existing subscription. It can be viewed by sending a GET request to the endpoint and be deleted by sending a DELETE request to the same endpoint.
+This can be done by sending a POST request to the `/api/v0/subscription/` endpoint with a callback URL and an update frequency (defaults to 5 minutes). Only one subscription can be registered at a time. Any changes will update the existing subscription. It can be viewed by sending a GET request to the endpoint and be deleted by sending a DELETE request to the same endpoint.
 
 <CodeGroup>
   ```bash cURL
-  curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/webhooks" \
+  curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/subscription/" \
     --header 'Content-Type: application/json' \
     --data '{
       "callback_url": "https://your-webhook-endpoint.com",
@@ -26,7 +26,7 @@ This can be done by sending a POST request to the `/api/v0/webhooks` endpoint wi
 import requests
 import json
 
-url = 'https://healthharbor.co/api/v0/webhooks'
+url = 'https://healthharbor.co/api/v0/subscription/'
 payload = {
   "callback_url": "https://your-webhook-endpoint.com",
   "update_frequency_min": 5
@@ -41,7 +41,7 @@ response = requests.post(
 ``` javascript Javascript
 const axios = require('axios');
 
-const url = 'https://healthharbor.co/api/v0/webhooks';
+const url = 'https://healthharbor.co/api/v0/subscription/';
 const payload = {
   callback_url: 'https://your-webhook-endpoint.com',
   update_frequency_min: 5
