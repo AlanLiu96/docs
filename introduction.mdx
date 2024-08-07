@@ -2,12 +2,81 @@
 title: "Introduction"
 ---
 
-### Overview
+## Overview
 
-Health Harbor's API handles calls to insurance for your providers so you don't have to.
+Health Harbor handles calls to insurance for your providers so you don't have to.
 
-This API supports insurance inquiries for [dental](api-reference/dental-quickstart), [mental health](api-reference/mental-health-quickstart), and [medical](api-reference/medical-quickstart) providers. Supported operations include:
+Our API allows you to submit call requests (inquiries) in bulk, and integrate them directly into your service for your providers and your patients. We handle the entire call, from navigating the IVR system to speaking with a live agent, and return results to you via our API. You'll then be able to view results directly within your own system.
 
+We also provide a web portal for you to view results and listen to call recordings that can optionally be used in conjunction with the API.
+
+### What we call for
+Our API currently handles calls for:
+- Eligibility and benefits/insurance verification checks
+- Claims status checks
+- Prior auth status checks
+
+#### Eligibility and Benefits
+In addition to checking if a patient's plan is active and deductibles/maximums, this also includes checking coverage levels for specific procedure codes, information typically not available via the insurance company's website.
+
+#### Claims Status
+We handle your AR follow up so you can understand why a claim shows no activity or is denied. Your team can then focus on fixing or adjusting the claim to recover payments left on the table.
+
+#### Prior Auth Status
+We can check the status of a prior authorization inquiry, including the date it was submitted, the date it was approved, how long it lasts and the number of visits approved.
+
+### How Calls Work
+Our AI voice calls insurance companies to retrieve any information you need, including eligibility, prior auth status and claims status / denial reasons. We are able to retrieve results in ~95% of all covered cases. In the remaining 5% of cases, we will provide you with the reason why we were unable to retrieve the information and you will not be charged for the call.
+
+There are three main stages to calls, first navigating the insurance's automated system or IVR, then waiting on hold, and finally speaking directly with a live agent. We use an AI generated voice backed by generative AI technology to have a seamless conversation with the human insurance representative. We'll ask the questions you need answered and return the results to you.
+
+The results will be sent to you directly through our subscription webhook. Alternatively, you can use a polling approach to retrieve events more often.
+
+### Who we call
+Currently, through our API we have support for the largest insurances which comprise ~50% of the plans in the US. We are actively working on expanding the number of insurances we support and expect to add more each month.
+
+The current supported insurances include:
+Aetna, Cigna, Humana, MetLife, Optum, Oxford, United Healthcare
+
+On our roadmap (~Q4 2024) are:
+Medicare, Medicaid, Blue Cross Blue Shield
+
+Sometimes, payors do not provide access to providers or make it particularly onorous to find or access information. In these cases, we are unable to provide results. These insurances include:
+UMR, Veterans Affairs
+
+### Completion Time
+
+On average, requests take 24 hours to return results. Our SLA is 48 hours.
+
+In rare cases, we may exceed this limitation due to circumstances outside our control. For instance, payor systems are often nonfunctional or overloaded and unable to handle any queries regardless of who is calling in. This happens on a surprisingly regular cadence (historically ~1-2 days a month).
+
+### Verifying Results
+
+We provide multiple data points for you to verify that our information is accurate.
+
+First we provide the name of the representative or representatives that we spoke with and their reference number(s). We also provide the date and time that the call took place.
+
+Then, we provide access to the call transcript, making it easy to quickly review the conversation with our AI.
+
+Finally we enable access to the recording of the call, so that you can verify the source data our results are based upon.
+
+### Pricing
+
+We charge based on the complexity of a call and how urgently you need the information.
+
+- We charge in proportion to the complexity of the call. Importantly, it is not based on call duration, but rather what information is needed. For example, with eligibility requests we consider how many custom questions you need answered, as well as how many codes you want benefits for. We do not factor in the time it takes to navigate the IVR system or even wait on hold. We eat that cost for you.
+
+- We also charge based on how urgently you need information. Urgent requests are 2x the price of non-urgent requests. Non-urgent requests return results in 48 hours. Urgent requests return results on the same day if submitted before noon eastern time.
+
+Once we've aligned on pricing of your non-urgent requests, we provide free access to our web portal. Access to our API requires a one-time implementation fee as it come with dedicated time from one of our engineers.
+
+As you scale up usage, we provide volume based discounts. Contact us for more information.
+
+## API Details
+
+For more information, take a look at our quickstarts for [dental](api-reference/dental-quickstart), [mental health](api-reference/mental-health-quickstart), and [medical](api-reference/medical-quickstart) providers.
+
+Supported operations include:
 1. Creating an inquiry to call insurance for a provider.
 2. Reading a previously submitted inquiry to get its status and results.
 
@@ -24,58 +93,3 @@ Each operation is supported individually or in bulk.
     Learn more about our what you can do with our API
   </Card>
 </CardGroup>
-
-### Guide
-
-In this guide, we'll help you get started with Health Harbor. We will cover everything, starting with creating an account through authentication, creating your first inquiry and reading results.
-
-### How Calls Work
-
-Our AI voice calls insurance companies to retrieve any information you need, including eligibility, prior auth status and claims status / denial reasons.
-
-There are three main stages to calls, first navigating the insurance's automated system or IVR, then waiting on hold, and finally speaking directly with a live agent.
-
-We handle the entire call and return results via our API or web portal.
-
-### Supported Insurance Payors
-
-We can call any insurance payor. Below is a list of insurances we currently support at scale. We're continuously working on adding support for new insurances. If you don't see an insurance that you need, just let us know and we can add it in for you.
-
-#### Dental
-Aetna, Cigna, MetLife, United Healthcare
-
-#### Medical
-Aetna, Cigna, Humana, MetLife, United Healthcare
-
-#### Mental Health
-Aetna, Cigna, Humana, MetLife, Optum, Oxford, United Healthcare
-
-### Completion Time
-
-On average, requests take 24 hours to return results. Our limitations are driven by the insurance companies open hours or system errors. Our SLA is 48 hours.
-
-In rare cases, we may exceed this limitation due to circumstances outside our control. For instance, payor systems are often nonfunctional or overloaded and unable to handle 
-any queries regardless of who is calling in. This happens on a surprisingly regular cadence (historically ~1-2 days a month).
-
-### Verifying Results
-
-We provide multiple data points for you to verify that our information is accurate.
-
-First we provide the name of the representative or representatives that we spoke with and their reference number(s). We also provide the date and time that the call took place.
-
-Then we provide access to the call transcript, making it easy to quickly review the conversation with our AI.
-
-Finally we enable access to the recording of the call, so that you can verify the source data our results are based upon.
-
-### Pricing
-
-We charge based on the complexity of a call and how urgently you need the information.
-
-- We charge in proportion to the complexity of the call. It is not based on call duration, but rather what information is needed. For example, with eligibility requests we consider, how many custom questions you need answered, as well as how many codes you want benefits for. We do not factor in the time it takes to navigate the IVR system or even wait on hold. We eat that cost for you.
-
-- We also charge based on how urgently you need information. Urgent requests are 2x the price of non-urgent requests. Non-urgent requests return results in 24 hours. Urgent requests return results on the same day.
-
-Once we've aligned on pricing of your non-urgent requests, we provide free access to our web portal. Access to our API requires a one-time implementation fee as it come with 
-dedicated time from one of our engineers.
-
-As you scale up usage, we provide volume based discounts. Contact us for more information.
