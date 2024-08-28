@@ -1,5 +1,5 @@
 ---
-title: "Medical Quickstart"
+title: "Medical Benefits Quickstart"
 icon: "code"
 ---
 
@@ -8,7 +8,7 @@ icon: "code"
   [authentication](../authentication) for more information.
 </Warning>
 ### Overview
-In this quickstart, we will retrieve benefits for a patient for a medical provider. We will walk through the requests needed to create an inquiry and retrieve the results.
+In this 5 minute quickstart, we will walk through how to submit benefits requests. Each of these requests will trigger a call to the specified insurance payor, and when completed, you'll receive the results at any webhooks you've set up.
 
 ### Create an Inquiry
 
@@ -34,6 +34,7 @@ curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/me
     "insurance": "UNITED_HEALTHCARE",
     "insurance_in_network": true,
     "npi": "1245319599",
+    "practice_billing_address": "123 Main St, New York, NY 10001",
     "tax_id": "123456789",
     "external_id": "provider_123",
     "benefits_codes": [
@@ -63,6 +64,7 @@ payload = {
   "insurance": "UNITED_HEALTHCARE",
   "insurance_in_network": True,
   "npi": "1245319599",
+  "practice_billing_address": "123 Main St, New York, NY 10001",
   "tax_id": "123456789",
   "external_id": "provider_123",
   "benefits_codes": [
@@ -97,7 +99,7 @@ Successful creations will return this response.
 
 ### Retrieve an Inquiry
 
-Now that you've made a medical inquiry, you can check the results with a GET request and the `inquiry_id` returned when you created an inquiry.
+Now that you've made a medical inquiry, you can check the results with a GET request and the `inquiry_id` returned when you created an inquiry. This is an alternative to receiving the results at your webhook which will be sent automatically once the results are complete.
 
 <CodeGroup>
 ```bash cURL
@@ -189,6 +191,7 @@ Here is a sample response.
     "insurance": "UNITED_HEALTHCARE",
     "insurance_in_network": true,
     "npi": "1245319599",
+    "practice_billing_address": "123 Main St, New York, NY 10001",
     "tax_id": "123456789",
     "external_id": "provider_123",
     "benefits_codes": [

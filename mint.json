@@ -71,7 +71,8 @@
     {
       "group": "Medical",
       "pages": [
-        "api-reference/medical-quickstart",
+        "api-reference/medical-benefits-quickstart",
+        "api-reference/medical-claim-status-quickstart",
         "api-reference/endpoint/create-medical-inquiry",
         "api-reference/endpoint/create-medical-inquiries",
         "api-reference/endpoint/get-medical-inquiry",

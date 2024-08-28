@@ -1,0 +1,149 @@
+---
+title: "Medical Claim Status Quickstart"
+icon: "code"
+---
+
+<Warning>
+  These endpoints require authentication. Please see
+  [authentication](../authentication) for more information.
+</Warning>
+### Overview
+In this 5 minute quickstart, we will walk through how to submit claim status requests. Each of these requests will trigger a call to the specified insurance payor, and when completed, you'll receive the results at any webhooks you've set up.
+
+### Create an Inquiry
+
+Let's walk through an example of how to create an inquiry using a POST request.
+
+You will need to provide the necessary information to check the claims status. This generally includes information about your provider, patient and the claim.
+
+<CodeGroup>
+```bash cURL
+curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/medical/inquiries" \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "CLAIMS_STATUS",
+    "desired_completion_date": "08-25-2024",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2023",
+    "member_id": "567891234",
+    "insurance": "UNITED_HEALTHCARE",
+    "beneficiary":"PRIMARY",
+    "npi": "1245319599",
+    "tax_id": "123456789",
+    "billed_amount": 100.99,
+    "claims_date_of_service": "08-01-2024",
+    "claim_number": "123456789",
+}'
+```
+
+```python Python
+import requests
+import json
+
+url = 'https://healthharbor.co/api/v0/medical/inquiries'
+payload = {
+    "type": "CLAIMS_STATUS",
+    "desired_completion_date": "08-25-2024",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2023",
+    "member_id": "567891234",
+    "insurance": "UNITED_HEALTHCARE",
+    "beneficiary":"PRIMARY",
+    "npi": "1245319599",
+    "practice_billing_address": "123 Main St, New York, NY 10001",
+    "tax_id": "123456789",
+    "billed_amount": 100.99,
+    "claims_date_of_service": "08-01-2024",
+    "claim_number": "123456789",
+}
+response = requests.post(
+    url = url,
+    data=json.dumps(payload),
+    auth=([PROJECT_ID], [API_KEY])
+)
+```
+</CodeGroup>
+
+Successful creations will return this response.
+
+<CodeGroup>
+```json JSON
+{
+  "success": true,
+  "inquiry_id": "7d98c8a4-4b17-4e9b-b2f6-6131df874b8b",
+}
+```
+</CodeGroup>
+
+### Retrieve an Inquiry
+
+Now that you've made your first inquiry, you can check the results with a GET request and the `inquiry_id` returned when you created an inquiry. This is an alternative to receiving the results at your webhook which will be sent automatically once the results are complete.
+
+<CodeGroup>
+```bash cURL
+curl -u [PROJECT_ID]:[API_KEY] --request GET "https://healthharbor.co/api/v0/medical/inquiries/722b06d8-1855-402b-9916-bfa450cc1572"
+```
+
+```python Python
+import requests
+
+url = "https://healthharbor.co/api/v0/medical/inquiries/722b06d8-1855-402b-9916-bfa450cc1572"
+response = requests.get(
+  url=url,
+  auth=([PROJECT_ID], [API_KEY])
+)
+```
+
+</CodeGroup>
+
+Here is a sample response.
+
+```json JSON
+{
+  "id": "67daad83-01e3-4e35-9dee-e494a68fad2c",
+  "status": "SUCCESS",
+  "creation_ts": "2020-01-01T00:00:00.000000Z",
+  "summary": "Claims retrieved successfully.",
+  "results": {
+    "status": "APPROVED",
+    "number": "123456789",
+    "timeline": {
+      "date_received": "08-01-2024",
+      "date_processed": "08-05-2024",
+      "date_paid": "08-10-2024"
+    },
+    "unprocessed_claim_info": {
+      "date_processed_up_to": "08-05-2024",
+      "turnaround_time": null,
+    },
+    "code_details": [
+      {
+        "procedure_code": "94625",
+        "amound_paid": 80.99,
+        "patient_responsibility": 20.00,
+        "patient_applied_to_deductible": 20.00,
+        "adjustment_details": null,
+        "claim_denial_reason": null,
+        "appeal_or_correction_info": null,
+      }
+    ]
+  },
+  "request":{
+    "type": "CLAIMS_STATUS",
+    "desired_completion_date": "08-25-2024",
+    "patient_name": "Alex Martin",
+    "dob": "01-31-2023",
+    "member_id": "567891234",
+    "insurance": "UNITED_HEALTHCARE",
+    "beneficiary":"PRIMARY",
+    "npi": "1245319599",
+    "practice_billing_address": "123 Main St, New York, NY 10001",
+    "tax_id": "123456789",
+    "billed_amount": 100.99,
+    "claims_date_of_service": "08-01-2024",
+    "claim_number": "123456789",
+  }
+}
+```
+
+You have successfully created a medical inquiry and retrieved the results! For further details on the parameters and fields in the requests and the responses, please refer to our [Detailed API Reference](endpoint/create-medical-inquiry).
