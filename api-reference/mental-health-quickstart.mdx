@@ -31,18 +31,15 @@ request = request.get(
 ```
 
 </CodeGroup>
-
-### Additional Prerequisites
-
-For mental health inquiries, we have customized `benefits_query`s for each customer. Please [reach out](mailto:alan@healthharbor.co) to our team to get set up to use our Mental Health API.
+### Overview
+In this 5 minute quickstart, we will walk through how to submit benefits requests. Each of these requests will trigger a call to the specified insurance payor, and when completed, you'll receive the results at any webhooks you've set up.
 
 ### Create an Inquiry
+Let's walk through an example use case of the [Mental Health API](endpoint/create-mental-health-inquiry). We'll be creating an inquiry to trigger a call on the Health Harbor API and retrieve the benefits information for a patient. You will need to provide information on the patient, patient's insurance, provider, and the benefits you are interested in checking.
 
-Let's walk through an example use case of the [Mental Health API](endpoint/create-mental-health-inquiry). Say you want to request benefits for certain procedure codes for a patient for a mental health provider.
+You can choose from existing common sets of procedure codes (e.g. `PSYCHOTHERAPY`, `OFFICE_VISIT_NEW_PATIENT`) and add-on information such as network status or plan information. You can also provide your own custom procedure codes. For additional codes, please use `CODE_LOOKUP_BENEFITS` as the `benefits_query` and pass in the specific codes as `benefits_codes`.
 
-You will need to provide information on the patient, patient's insurance, provider, and the benefits you are interested in checking.
-
-For specific benefits codes, please use `CODE_LOOKUP_BENEFITS` as the `benefits_query` and pass in the specific codes as `benefits_codes`.
+For the full list of possible queries, please refer to the [Mental Health API documentation](endpoint/create-mental-health-inquiry).
 
 <CodeGroup>
 ```bash cURL
@@ -63,9 +60,18 @@ curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/me
       "F41.1",
       "F42.23"
     ],
+    "benefits_query": [
+      "PLAN_INFO",
+      "MAXIMUMS",
+      "CODE_LOOKUP_BENEFITS"
+    ],
+    "benefits_codes": [
+      "90832"
+    ],
     "insurance": "CIGNA",
     "is_specialist": true,
-    "place_of_service": "office"
+    "place_of_service": "office",
+    "practice_billing_address": "123 Main St, New York, NY 10001"
 }'
 ```
 
@@ -90,9 +96,18 @@ curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/me
       "F41.1",
       "F42.23"
     ],
+    "benefits_query": [
+      "PLAN_INFO",
+      "MAXIMUMS",
+      "CODE_LOOKUP_BENEFITS"
+    ],
+    "benefits_codes": [
+      "90832"
+    ],
     "insurance": "CIGNA",
     "is_specialist": true,
-    "place_of_service": "office"
+    "place_of_service": "office",
+    "practice_billing_address": "123 Main St, New York, NY 10001"
 }
 
   response = request.post(
@@ -105,7 +120,7 @@ curl -u [PROJECT_ID]:[API_KEY] --request POST "https://healthharbor.co/api/v0/me
 
 </CodeGroup>
 
-Successful creations will return an `inquiry_id`. You will need this `inquiry_id` to check on its status and see results.
+Successful creations will return an `inquiry_id`. You can use this `inquiry_id` to check on its status and see results.
 
 <CodeGroup>
 ```json JSON
@@ -118,7 +133,7 @@ Successful creations will return an `inquiry_id`. You will need this `inquiry_id
 
 ### Retrieve an Inquiry
 
-Now that you've made a mental health inquiry, you want to check on the results. You can use our API to do so. The `inquiry_id` is required.
+Now that you've made a mental health inquiry, you can check on the results with a GET request using the `inquiry_id` returned when you created an inquiry. This is an alternative to receiving the results at your webhook, which will be sent automatically once the results are complete if it is set up.
 
 <CodeGroup>
 ```bash cURL
@@ -187,7 +202,7 @@ Here is a sample response.
           "copay_amount": "20.00",
           "coinsurance_percentage": "20",
           "frequency_limitations": "Two visits per week",
-          "more_info": "Diagnosis of medium to severe COPD is required for coverage."
+          "limitations": "Family therapy is not covered.",
         }
       ]
     ]
@@ -204,11 +219,20 @@ Here is a sample response.
     "tax_id": "123456789",
     "external_id": "health_harbor_sf",
     "diagnosis_codes": ["F41.1", "F42.23"],
+    "benefits_query": [
+      "PLAN_INFO",
+      "MAXIMUMS",
+      "CODE_LOOKUP_BENEFITS"
+    ],
+    "benefits_codes": [
+      "90832"
+    ],
     "claims_date_of_service": "01-31-2020",
     "claim_number": "1234567890",
     "insurance": "CIGNA",
     "is_specialist": true,
-    "place_of_service": "office"
+    "place_of_service": "office",
+    "practice_billing_address": "123 Main St, New York, NY 10001"
   }
 }
 ```
