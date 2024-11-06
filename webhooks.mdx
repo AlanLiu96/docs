@@ -8,7 +8,7 @@ We support webhooks as an alternative to polling to receive real-time updates on
 
 ## Getting Started with Webhooks
 
-To enable webhooks, you'll need to register a subscription with a webhook endpoint. This endpoint will receive a POST request with the inquiry data as soon whenever an update has been made (e.g. when the call is initiated, in progress and completed).
+To enable webhooks, you'll need to register a subscription with a webhook endpoint. This endpoint will receive a POST request with the inquiry data whenever an update has been made (e.g. when the call is initiated, in progress and completed).
 
 This can be done by sending a POST request to the `/api/v0/subscription/` endpoint with a callback URL and an update frequency (defaults to 5 minutes). Only one subscription can be registered at a time. Any changes will update the existing subscription. It can be viewed by sending a GET request to the endpoint and be deleted by sending a DELETE request to the same endpoint.
 
